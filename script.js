@@ -223,7 +223,7 @@ function addCat(image, name, price) {
 function checkRestaurantOpen(){
    const data = new Date()
    const hora = data.getHours()
-   return hora >= 18 && hora < 22;
+   return hora >= 18 && hora < 00;
 }
 
 const spanItem = document.getElementById('date-span')
