@@ -240,6 +240,6 @@ if(isOpen){
 } else {
    spanItem.classList.add("bg-red-500")
    spanItem.classList.remove("bg-green-500")
-   cartAlert.classList.add('flex')
+   cartAlert.classList.add('hidden')
 
 }
