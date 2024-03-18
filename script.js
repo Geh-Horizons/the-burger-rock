@@ -67,15 +67,15 @@ function addCat(image, name, price) {
 
 // Atualiza Carrinho 
 
-   function updateCartModal() {
+function updateCartModal() {
 
-      cartItemsContainer.innerHTML = ""
-      let total = 0
+   cartItemsContainer.innerHTML = ""
+   let total = 0
 
-      cart.forEach(item => {
-         const cartItemElement = document.createElement("div");
+   cart.forEach(item => {
+      const cartItemElement = document.createElement("div");
 
-         cartItemElement.innerHTML = `
+      cartItemElement.innerHTML = `
                <div class="w-full flex items-center bg-slate-100 shadow-lg text-black justify-between rounded-lg p-4 ">
                   <div class="flex jusitfy-between items-center gap-4">
                   <image src=${item.image} alt=${item.name} class="w-20 h-20 rounded"/>
@@ -97,141 +97,126 @@ function addCat(image, name, price) {
          
          
          `
-         total += item.price * item.quantity
+      total += item.price * item.quantity
 
 
-         cartItemsContainer.appendChild(cartItemElement)
-      })
-      cartTotal.textContent = total.toLocaleString("pt-BR", {
-         style: "currency",
-         currency: "BRL"
+      cartItemsContainer.appendChild(cartItemElement)
+   })
+   cartTotal.textContent = total.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
 
-      })
-
-      cartCount.innerText = cart.length;
-   }
-
-   // Função para remover o item do carrinho
-
-   cartItemsContainer.addEventListener("click", function(event){
-      if(event.target.classList.contains("remove-from-btn")){
-         const name = event.target.getAttribute("data-name")
-
-         removeItemCart(name);
-      }
    })
 
-   function removeItemCart(name){
-      const index = cart.findIndex(item => item.name === name)
-
-      if(index !== -1){
-         const item = cart[index]
-
-         if(item.quantity > 1){
-            item.quantity -= 1
-            updateCartModal()
-            return;
-         }
-         cart.splice(index, 1)
-         updateCartModal()
-      }
-   }
-
-   // Address de entrega
-
-   addressInput.addEventListener('input', function(event){
-      let inputValue = event.target.value
-
-      if(inputValue !== ""){
-         addressInput.classList.remove("border-red-500")
-         addressWarn.classList.add('hidden')
-      }
-      //
-   })
-   // nome cliente
-   userNameInput.addEventListener('input', function(event){
-      let inputNameValue = event.target.value
-      if(inputNameValue !== ""){
-         userNameInput.classList.remove("border-red-500")
-         userNameWarn.classList.add('hidden')
-      }
-   })
-
-   checkoutBtn.addEventListener("click", function(){
-
-      /* const isOpen = checkRestaurantOpen()
-      if(!isOpen){
-         Toastify({
-            text: "No momento estamos Fechado!",
-            duration: 3000,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-            background: "linear-gradient(#ef4444)",
-            },
-         }).showToast();
-      } */
-
-
-
-      if(cart.length === 0) return;
-
-      if(addressInput.value === ""){
-         addressWarn.classList.remove("hidden")
-         addressInput.classList.add("border-red-500")
-         return;
-      }
-      if(userNameInput.value === ""){
-         userNameWarn.classList.remove("hidden")
-         userNameWarn.classList.add("border-red-500")
-         return;
-      }
-      
-
-
-         // enviar pedido a api do whatsapp
-
-      const cartItems = cart.map((item)=>{
-         return (
-         
-            `${item.quantity} ${item.name} - SubTotal: R$ ${(item.price*item.quantity).toFixed(2)} \n`
-            
-         )
-      }).join("")
-
-      const valorTotalText = cartTotal.textContent
-      const userName = userNameInput.value
-      const address = addressInput.value
-
-      const message = `Olá! The Burger Rock.\n\nPEDIDO DO CLIENTE, ${userName} É:\n\n${cartItems}\nTotal do Pedido: ${(valorTotalText)}\n\nEndereço de entrega:\n${address}\n`;
-
-      const encodedMessage = encodeURIComponent(message)
-      
-      const phone = "5585997759542"
-
-      window.open(`https://wa.me/${phone}?text=${encodedMessage}`, "_blank")
-
-      cart = []
-      userNameInput.value = ""
-      addressInput.value = ""
-      updateCartModal()
-   })
-
-
-function checkRestaurantOpen(){
-   const data = new Date()
-   const hora = data.getHours()
-   return hora >= 18 && hora < 00;
+   cartCount.innerText = cart.length;
 }
 
-const spanItem = document.getElementById('date-span')
-const cartAlert = document.getElementById('cart-alert')
+// Função para remover o item do carrinho
+
+cartItemsContainer.addEventListener("click", function (event) {
+   if (event.target.classList.contains("remove-from-btn")) {
+      const name = event.target.getAttribute("data-name")
+
+      removeItemCart(name);
+   }
+})
+
+function removeItemCart(name) {
+   const index = cart.findIndex(item => item.name === name)
+
+   if (index !== -1) {
+      const item = cart[index]
+
+      if (item.quantity > 1) {
+         item.quantity -= 1
+         updateCartModal()
+         return;
+      }
+      cart.splice(index, 1)
+      updateCartModal()
+   }
+}
+
+// Address de entrega
+
+addressInput.addEventListener('input', function (event) {
+   let inputValue = event.target.value
+
+   if (inputValue !== "") {
+      addressInput.classList.remove("border-red-500")
+      addressWarn.classList.add('hidden')
+   }
+   //
+})
+// nome cliente
+userNameInput.addEventListener('input', function (event) {
+   let inputNameValue = event.target.value
+   if (inputNameValue !== "") {
+      userNameInput.classList.remove("border-red-500")
+      userNameWarn.classList.add('hidden')
+   }
+})
+
+checkoutBtn.addEventListener("click", function () {
+
+
+   if (cart.length === 0) return;
+
+   if (addressInput.value === "") {
+      addressWarn.classList.remove("hidden")
+      addressInput.classList.add("border-red-500")
+      return;
+   }
+   if (userNameInput.value === "") {
+      userNameWarn.classList.remove("hidden")
+      userNameWarn.classList.add("border-red-500")
+      return;
+   }
+
+
+
+   // enviar pedido a api do whatsapp
+
+   const cartItems = cart.map((item) => {
+      return (
+
+         `${item.quantity} ${item.name} - SubTotal: R$ ${(item.price * item.quantity).toFixed(2)} \n`
+
+      )
+   }).join("")
+
+   const valorTotalText = cartTotal.textContent
+   const userName = userNameInput.value
+   const address = addressInput.value
+
+   const message = `Olá! The Burger Rock.\n\nPEDIDO DO CLIENTE, ${userName} É:\n\n${cartItems}\nTotal do Pedido: ${(valorTotalText)}\n\nEndereço de entrega:\n${address}\n`;
+
+   const encodedMessage = encodeURIComponent(message)
+
+   const phone = "5585997759542"
+
+   window.open(`https://wa.me/${phone}?text=${encodedMessage}`, "_blank")
+
+   cart = []
+   userNameInput.value = ""
+   addressInput.value = ""
+   updateCartModal()
+})
+
+
+function checkRestaurantOpen() {
+   const data = new Date()
+   const hora = data.getHours()
+   console.log(hora)
+   return hora >= 18 & hora < 24;
+}
+
+const spanItem = document.getElementById("date-span")
+const cartAlert = document.getElementById("cart-alert")
 
 const isOpen = checkRestaurantOpen()
 
-if(isOpen){
+if (isOpen) {
    spanItem.classList.remove("bg-red-500")
    spanItem.classList.add("bg-green-500")
    cartAlert.classList.add('hidden')
@@ -240,6 +225,114 @@ if(isOpen){
 } else {
    spanItem.classList.add("bg-red-500")
    spanItem.classList.remove("bg-green-500")
-   cartAlert.classList.add('hidden')
+   cartAlert.classList.add('flex')
 
 }
+
+
+/* soliocitar cardápio */
+const cardapioOline = document.getElementById('cart-cardapio')
+const numberInput = document.getElementById('numberInput')
+const cardapioBtn = document.getElementById('cardapio-btn')
+
+
+
+numberInput.addEventListener('input', function (event) {
+   let inputNumberValue = event.target.value
+   if (inputNumberValue !== "") {
+      numberInput.classList.remove("border-red-500")
+   } else {
+      numberInput.classList.add("border-red-500")
+
+   }
+})
+
+
+function CriaMensagem() {
+   const messageReturn = `
+     <div class="w-full flex flex-col p-2">
+       <h1>THE BURGER ROCK</h1>
+       
+       <p class="italic font-bold">
+         <span class="font-normal">Nome:</span> Dupla Carne.<br>
+         <span class="font-normal">Descrição:</span> Dois hambúrgueres carne, 3 pães e, alface e queijo.<br>
+         <span class="font-normal">Preço:</span> R$ 31,80
+       </p>
+ 
+       <p class="italic font-bold">
+         <span class="font-normal">Nome:</span> 4 Carnes.<br>
+         <span class="font-normal">Descrição:</span> Quatro hambúrgueres de carne, 3 pães, alface e queijo.<br>
+         <span class="font-normal">Preço:</span> R$ 37,80
+       </p>
+ 
+       <p class="italic font-bold">
+         <span class="font-normal">Nome:</span> Artesanal de Bacon.<br>
+         <span class="font-normal">Descrição:</span> Carne, com pão artesanal, fatias de bacon e queijo.<br>
+         <span class="font-normal">Preço:</span> R$ 32,90
+       </p>
+ 
+       <p>Aguarde nosso horário de atendimento ou, se preferir, pré-defina o pedido e retornaremos assim que possível.</p>
+     </div>
+   `;
+   //return messageReturn;
+   
+ }
+ 
+
+
+
+
+cardapioBtn.addEventListener("click", function () {
+
+   if (numberInput.value === "") {
+      numberInput.classList.add("border-red-500")
+   } else {
+      numberInput.classList.remove("border-red-500")
+   }
+
+      const mensagemClient = `
+      THE BURGER ROCK\n
+
+      Cardápio:\n
+
+      Nome: Dupla Carne.
+      Descrição: Dois hambúrgueres carne, 3 pães e, alface e queijo.
+      Preço: R$ 31,80\n
+      Nome: 4 Carnes.
+      Descrição: Quatro hambúrgueres de carne, 3 pães, alface e queijo.
+      Preço: R$ 37,90\n
+      Nome: Artesanal de Bacon.
+      Descrição: Carne, com pão artesanal, fatias de bacon e queijo.
+      Preço: R$ 32,90\n
+      \n\n
+      Se preferir, pode fazer seu pedido por aqui mesmo e deixar pré-save!\n
+      Basta aguardar Nosso Horário De Atendimento de Começa as 10:00 e termina ás 24:00 Abraços..
+      
+      
+      `
+
+      const numberInputClient = numberInput.value
+      const encodCard = encodeURIComponent(mensagemClient)
+      window.open(`https://wa.me/${numberInputClient}?text=${encodCard}`, "_blank")
+
+
+      numberInput.value = ""
+
+
+})
+/* THE BURGER ROCK\n
+
+      Cardápio:\n
+
+
+      Nome: Dupla Carne.
+      Descrição: Dois hambúrgueres carne, 3 pães e, alface e queijo.
+      Preço: R$ 31,80\n
+      Nome: 4 Carnes.
+      Descrição: Quatro hambúrgueres de carne, 3 pães, alface e queijo.
+      Preço: R$ 37,90\n
+      Nome: Artesanal de Bacon.
+      Descrição: Carne, com pão artesanal, fatias de bacon e queijo.
+      Preço: R$ 32,90\n
+      \n\n
+      ... Aguardo até nosso horário de atendimento. */
